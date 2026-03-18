@@ -1,0 +1,10 @@
+# Credentials — never commit
+*-key.json
+*-credentials.json
+service-account*.json
+
+# Scraper runtime log (local only)
+.scrape-log
+
+# OS
+.DS_Store

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AISI Altmetric Tracker</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f9fa;
+    --surface: #ffffff;
+    --border: #dee2e6;
+    --text: #212529;
+    --text-muted: #6c757d;
+    --accent: #0d6efd;
+    --success: #198754;
+    --warning-bg: #fff3cd;
+    --warning-border: #ffc107;
+    --warning-text: #664d03;
+    --new-bg: #cfe2ff;
+    --new-text: #084298;
+    --score-color: #0d6efd;
+    --policy-color: #198754;
+    --card-radius: 8px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .header-stats {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  #refresh-all-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  #refresh-all-btn:hover { opacity: 0.88; }
+  #refresh-all-btn:disabled { opacity: 0.5; cursor: default; }
+
+  /* ── Banners ── */
+  .banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .banner-stale {
+    background: var(--warning-bg);
+    border-bottom: 1px solid var(--warning-border);
+    color: var(--warning-text);
+  }
+
+  .banner-new {
+    background: var(--new-bg);
+    border-bottom: 1px solid #9ec5fe;
+    color: var(--new-text);
+  }
+
+  .banner-dismiss {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  .banner-dismiss:hover { opacity: 1; }
+
+  /* ── Controls ── */
+  .controls {
+    display: flex;
+    gap: 12px;
+    padding: 12px 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .control-group label { color: var(--text-muted); }
+
+  .controls select {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  /* ── Export ── */
+  #export-btn {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  #export-btn:hover { background: var(--bg); color: var(--text); }
+
+  /* ── Main content ── */
+  .main { padding: 0 20px 40px; }
+
+  /* ── Category headings ── */
+  .category-heading {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding: 16px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+
+  /* ── Card grid ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .category-pill {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-new {
+    font-size: 11px;
+    color: var(--new-text);
+    background: var(--new-bg);
+    border-radius: 20px;
+    padding: 2px 8px;
+    animation: fadeout 1s ease 9s forwards;
+  }
+
+  @keyframes fadeout {
+    to { opacity: 0; }
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Score */
+  .score-area {
+    text-align: center;
+    padding: 4px 0;
+  }
+
+  .score-value {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--score-color);
+    line-height: 1;
+  }
+
+  .score-percentile {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Skeleton */
+  .skeleton {
+    background: linear-gradient(90deg, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .skeleton-score { height: 48px; width: 80px; margin: 0 auto; }
+  .skeleton-row { height: 20px; width: 100%; }
+  .skeleton-sparkline { height: 28px; width: 100%; }
+
+  /* Mentions */
+  .mentions {
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+
+  .mention-item { white-space: nowrap; }
+  .mention-item.policy { color: var(--policy-color); font-weight: 600; }
+  .mentions-none { font-size: 12px; color: var(--text-muted); }
+
+  /* Sparkline */
+  .sparkline-wrap { color: var(--accent); opacity: 0.7; line-height: 0; }
+
+  /* Status messages */
+  .status-msg {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 4px 0;
+  }
+
+  .status-msg.no-record { font-style: italic; }
+  .status-msg.error-msg { color: #dc3545; }
+
+  /* Card footer */
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: auto;
+    border-top: 1px solid var(--bg);
+    padding-top: 8px;
+  }
+
+  .card-links { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .card-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  .card-link:hover { text-decoration: underline; }
+
+  .btn-refresh {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+
+  .btn-refresh:hover { background: var(--bg); color: var(--text); }
+  .btn-refresh:disabled { opacity: 0.4; cursor: default; }
+
+  /* Non-arXiv card indicator */
+  .no-arxiv-msg {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    max-width: 480px;
+    margin: 80px auto;
+    padding: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    text-align: center;
+  }
+
+  .empty-state h2 { font-size: 20px; margin-bottom: 12px; }
+  .empty-state p { color: var(--text-muted); margin-bottom: 8px; }
+  .empty-state code {
+    display: block;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-family: monospace;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  /* Altmetric badge */
+  .altmetric-badge { display: block; height: 24px; width: auto; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>AISI Altmetric Tracker</h1>
+      <div class="header-stats" id="header-stats">Loading…</div>
+    </div>
+    <button id="refresh-all-btn">↻ Refresh all</button>
+  </div>
+</div>
+
+<!-- Banners -->
+<div id="stale-banner" class="banner banner-stale" style="display:none">
+  <span>⚠ Paper list is <strong id="stale-age"></strong> days old. Run <code>node scrape.js</code> to update.</span>
+  <button class="banner-dismiss" id="stale-dismiss" aria-label="Dismiss">✕</button>
+</div>
+<div id="new-banner" class="banner banner-new" style="display:none">
+  <span>✦ <strong id="new-count"></strong> new papers since your last visit</span>
+  <button class="banner-dismiss" id="new-dismiss" aria-label="Dismiss">✕</button>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="control-group">
+    <label for="sort-select">Sort:</label>
+    <select id="sort-select">
+      <option value="score-desc">Score ▾</option>
+      <option value="score-asc">Score ▴</option>
+      <option value="policy-desc">Most policy mentions</option>
+      <option value="date-desc">Date published (newest)</option>
+      <option value="category">Category</option>
+    </select>
+  </div>
+  <div class="control-group">
+    <label for="filter-select">Filter:</label>
+    <select id="filter-select">
+      <option value="">All categories</option>
+    </select>
+  </div>
+  <button id="export-btn">⬇ Export CSV</button>
+</div>
+
+<!-- Main -->
+<div class="main" id="main-content"></div>
+
+<script>
+'use strict';
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+
+const $ = id => document.getElementById(id);
+
+function lsGet(key) {
+  try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+}
+
+function lsSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+function timeAgo(isoStr) {
+  if (!isoStr) return 'unknown';
+  const diff = Date.now() - new Date(isoStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 2) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
+function daysSince(isoStr) {
+  return (Date.now() - new Date(isoStr).getTime()) / 86400000;
+}
+
+function escHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── Sparkline ─────────────────────────────────────────────────────────────────
+
+function sparkline(history) {
+  if (!history) return '';
+  const keys = ['1w', '1m', '3m', '6m', '1y', 'at'];
+  const points = keys.map(k => history[k] ?? 0);
+  const max = Math.max(...points, 1);
+  const min = Math.min(...points);
+  const w = 80, h = 28, pad = 2;
+  const coords = points.map((v, i) => {
+    const x = pad + (i / (points.length - 1)) * (w - pad * 2);
+    const y = pad + (1 - (v - min) / (max - min || 1)) * (h - pad * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">
+    <polyline points="${coords}" fill="none" stroke="currentColor"
+              stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// ── Rate-limited fetch queue ───────────────────────────────────────────────────
+
+const queue = [];
+let processing = false;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function queueFetch(url) {
+  return new Promise((resolve, reject) => {
+    queue.push({ url, resolve, reject });
+    if (!processing) processQueue();
+  });
+}
+
+async function processQueue() {
+  processing = true;
+  while (queue.length > 0) {
+    const { url, resolve, reject } = queue.shift();
+    try {
+      const res = await fetch(url);
+      resolve(res);
+    } catch (e) {
+      reject(e);
+    }
+    if (queue.length > 0) await sleep(1100);
+  }
+  processing = false;
+}
+
+// ── Altmetric fetch ────────────────────────────────────────────────────────────
+
+async function fetchAltmetric(arxivId) {
+  const url = `https://api.altmetric.com/v1/arxiv/${arxivId}`;
+  let res;
+  try {
+    res = await queueFetch(url);
+  } catch {
+    return { status: 'error', data: null };
+  }
+  if (res.status === 404) return { status: 'no_record', data: null };
+  if (res.status === 429) return { status: 'rate_limited', data: null };
+  if (!res.ok) return { status: 'error', data: null };
+  try {
+    const data = await res.json();
+    return { status: 'ok', data };
+  } catch {
+    return { status: 'error', data: null };
+  }
+}
+
+// ── Cache ──────────────────────────────────────────────────────────────────────
+
+function getCache() { return lsGet('altmetric_cache') || {}; }
+
+function setCache(cache) { lsSet('altmetric_cache', cache); }
+
+function isCacheStale(entry) {
+  if (!entry || !entry.last_fetched) return true;
+  return daysSince(entry.last_fetched) > 1; // >24h
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+let papers = [];
+let cache = {};
+let sortMode = 'score-desc';
+let filterCategory = '';
+let refreshAllActive = false;
+let refreshAllCount = 0;
+let refreshAllTotal = 0;
+let newIdsThisSession = new Set();
+
+// ── Card rendering ─────────────────────────────────────────────────────────────
+
+function mentionRow(data) {
+  const items = [
+    { icon: '🐦', field: 'cited_by_tweeters_count', label: 'Twitter' },
+    { icon: '📰', field: 'cited_by_newsoutlets_count', label: 'News' },
+    { icon: '📋', field: 'cited_by_policies_count', label: 'Policy', policy: true },
+    { icon: '📖', field: 'cited_by_wikipedia_count', label: 'Wikipedia' },
+    { icon: '🔗', field: 'cited_by_feeds_count', label: 'Blogs' },
+    { icon: '👽', field: 'cited_by_rdts_count', label: 'Reddit' },
+  ];
+
+  const visible = items
+    .map(i => ({ ...i, count: data[i.field] || 0 }))
+    .filter(i => i.count > 0);
+
+  if (visible.length === 0) {
+    return `<div class="mentions-none">No mentions yet</div>`;
+  }
+
+  return `<div class="mentions">${
+    visible.map(i =>
+      `<span class="mention-item${i.policy ? ' policy' : ''}" title="${i.label}">
+        ${i.icon} ${i.count}
+       </span>`
+    ).join('')
+  }</div>`;
+}
+
+function cardLinks(paper, cacheEntry) {
+  const links = [];
+  const data = cacheEntry?.data;
+
+  links.push(`<button class="btn-refresh" data-arxiv="${escHtml(paper.arxiv_id)}" title="Refresh Altmetric data">↻ Refresh</button>`);
+  links.push(`<a class="card-link" href="https://arxiv.org/abs/${escHtml(paper.arxiv_id)}" target="_blank" rel="noopener">arxiv ↗</a>`);
+  if (data?.altmetric_id) {
+    links.push(`<a class="card-link" href="https://www.altmetric.com/details/${escHtml(String(data.altmetric_id))}" target="_blank" rel="noopener">altmetric ↗</a>`);
+  }
+
+  return `<div class="card-links">${links.join('')}</div>`;
+}
+
+function renderArxivCard(paper, cacheEntry, isNew) {
+  const status = cacheEntry?.status || 'loading';
+  const data = cacheEntry?.data;
+  const lastFetched = cacheEntry?.last_fetched;
+
+  let scoreHtml = '';
+  let mentionsHtml = '';
+  let sparklineHtml = '';
+
+  if (status === 'loading') {
+    scoreHtml = `<div class="score-area"><div class="skeleton skeleton-score"></div></div>`;
+    mentionsHtml = `<div class="skeleton skeleton-row"></div>`;
+    sparklineHtml = `<div class="skeleton skeleton-sparkline"></div>`;
+  } else if (status === 'ok' && data) {
+    const score = Math.round(data.score ?? data.altmetric_score ?? 0);
+    const pct = data.context?.all?.pct;
+    scoreHtml = `
+      <div class="score-area">
+        <div class="score-value">${score}</div>
+        ${pct != null ? `<div class="score-percentile">Top ${100 - pct}% of all papers</div>` : ''}
+      </div>`;
+    mentionsHtml = mentionRow(data);
+    const sp = sparkline(data.history);
+    sparklineHtml = sp ? `<div class="sparkline-wrap">${sp}</div>` : '';
+  } else if (status === 'no_record') {
+    scoreHtml = `
+      <div class="status-msg no-record">
+        No Altmetric record yet.<br>
+        <small>May appear within days of first online mention.</small>
+      </div>`;
+  } else if (status === 'rate_limited') {
+    scoreHtml = `<div class="status-msg">Rate limited. Try again in a minute.</div>`;
+  } else if (status === 'error') {
+    const stale = data ? `<div style="margin-top:8px">${mentionRow(data)}</div>` : '';
+    scoreHtml = `<div class="status-msg error-msg">Fetch failed.${stale}</div>`;
+  }
+
+  return `
+    <div class="card" data-arxiv="${escHtml(paper.arxiv_id)}">
+      <div class="card-top">
+        ${paper.category ? `<span class="category-pill">${escHtml(paper.category)}</span>` : '<span></span>'}
+        ${isNew ? `<span class="badge-new">New</span>` : ''}
+      </div>
+      <div class="card-title">${escHtml(paper.title || paper.aisi_url)}</div>
+      ${scoreHtml}
+      ${mentionsHtml}
+      ${sparklineHtml}
+      <div class="card-footer">
+        <span>${paper.published_date ? escHtml(paper.published_date) : ''}${lastFetched ? ` · Updated ${timeAgo(lastFetched)}` : ''}</span>
+        ${cardLinks(paper, cacheEntry)}
+      </div>
+    </div>`;
+}
+
+function renderNonArxivCard(paper) {
+  const href = paper.report_url || paper.aisi_url;
+  return `
+    <div class="card">
+      <div class="card-top">
+        ${paper.category ? `<span class="category-pill">${escHtml(paper.category)}</span>` : '<span></span>'}
+      </div>
+      <div class="card-title">${escHtml(paper.title || paper.aisi_url)}</div>
+      <div class="no-arxiv-msg">
+        <span>ⓘ</span>
+        <span>No arXiv link — Altmetric unavailable</span>
+      </div>
+      <div class="card-footer">
+        <span>${paper.published_date ? escHtml(paper.published_date) : ''}</span>
+        <div class="card-links">
+          <a class="card-link" href="${escHtml(href)}" target="_blank" rel="noopener">View on AISI ↗</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Sort + filter ──────────────────────────────────────────────────────────────
+
+function getScore(paper) {
+  const entry = cache[paper.arxiv_id];
+  if (entry?.status === 'ok' && entry.data) {
+    return entry.data.score ?? entry.data.altmetric_score ?? 0;
+  }
+  return -1;
+}
+
+function getPolicyCount(paper) {
+  const entry = cache[paper.arxiv_id];
+  if (entry?.status === 'ok' && entry.data) {
+    return entry.data.cited_by_policies_count || 0;
+  }
+  return 0;
+}
+
+function parseDate(paper) {
+  if (!paper.published_date) return 0;
+  const d = new Date(paper.published_date);
+  return isNaN(d) ? 0 : d.getTime();
+}
+
+function sortedFilteredPapers() {
+  const arxivPapers = papers.filter(p => p.type === 'arxiv');
+  const nonArxivPapers = papers.filter(p => p.type !== 'arxiv');
+
+  let filtered = filterCategory
+    ? arxivPapers.filter(p => p.category === filterCategory)
+    : arxivPapers;
+
+  const nonFiltered = filterCategory
+    ? nonArxivPapers.filter(p => p.category === filterCategory)
+    : nonArxivPapers;
+
+  switch (sortMode) {
+    case 'score-asc':
+      filtered.sort((a, b) => getScore(a) - getScore(b));
+      break;
+    case 'policy-desc':
+      filtered.sort((a, b) => getPolicyCount(b) - getPolicyCount(a));
+      break;
+    case 'date-desc':
+      filtered.sort((a, b) => parseDate(b) - parseDate(a));
+      break;
+    case 'category':
+      filtered.sort((a, b) => (a.category || '').localeCompare(b.category || ''));
+      break;
+    case 'score-desc':
+    default:
+      filtered.sort((a, b) => getScore(b) - getScore(a));
+      break;
+  }
+
+  return { arxiv: filtered, nonArxiv: nonFiltered };
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+
+function render() {
+  const { arxiv, nonArxiv } = sortedFilteredPapers();
+  const container = $('main-content');
+
+  if (sortMode === 'category') {
+    // Group under category headings
+    const groups = {};
+    for (const p of arxiv) {
+      const cat = p.category || 'Uncategorised';
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(p);
+    }
+
+    let html = '';
+    for (const [cat, group] of Object.entries(groups)) {
+      html += `<div class="category-heading">${escHtml(cat)}</div>`;
+      html += `<div class="card-grid">`;
+      for (const p of group) {
+        html += renderArxivCard(p, cache[p.arxiv_id], newIdsThisSession.has(p.arxiv_id));
+      }
+      html += `</div>`;
+    }
+
+    if (nonArxiv.length) {
+      html += `<div class="category-heading">Other / No arXiv link</div>`;
+      html += `<div class="card-grid">`;
+      for (const p of nonArxiv) html += renderNonArxivCard(p);
+      html += `</div>`;
+    }
+
+    container.innerHTML = html;
+  } else {
+    let html = `<div class="card-grid">`;
+    for (const p of arxiv) {
+      html += renderArxivCard(p, cache[p.arxiv_id], newIdsThisSession.has(p.arxiv_id));
+    }
+    for (const p of nonArxiv) {
+      html += renderNonArxivCard(p);
+    }
+    html += `</div>`;
+    container.innerHTML = html;
+  }
+
+  attachRefreshHandlers();
+  updateHeaderStats();
+}
+
+function attachRefreshHandlers() {
+  document.querySelectorAll('.btn-refresh[data-arxiv]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.arxiv;
+      refreshSingle(id);
+    });
+  });
+}
+
+// ── Header stats ──────────────────────────────────────────────────────────────
+
+function updateHeaderStats() {
+  const arxivPapers = papers.filter(p => p.type === 'arxiv');
+  const otherPapers = papers.filter(p => p.type !== 'arxiv');
+
+  let totalMentions = 0, policyCount = 0, topScore = 0;
+  for (const p of arxivPapers) {
+    const entry = cache[p.arxiv_id];
+    if (entry?.status === 'ok' && entry.data) {
+      totalMentions += entry.data.cited_by_posts_count || 0;
+      if ((entry.data.cited_by_policies_count || 0) > 0) policyCount++;
+      const s = entry.data.score ?? entry.data.altmetric_score ?? 0;
+      if (s > topScore) topScore = s;
+    }
+  }
+
+  let scrapedPart = '';
+  if (papers._meta?.scraped_at) {
+    scrapedPart = ` · Paper list scraped: ${timeAgo(papers._meta.scraped_at)} · run \`node scrape.js\` to update`;
+  }
+
+  const progressPart = refreshAllActive
+    ? ` · Updating ${refreshAllCount} of ${refreshAllTotal}…`
+    : '';
+
+  $('header-stats').textContent =
+    `${arxivPapers.length} arXiv · ${otherPapers.length} other · ${totalMentions} total mentions · ${policyCount} policy · top score ${Math.round(topScore)}${scrapedPart}${progressPart}`;
+}
+
+// ── Category filter population ────────────────────────────────────────────────
+
+function populateCategories() {
+  const cats = [...new Set(papers.map(p => p.category).filter(Boolean))].sort();
+  const sel = $('filter-select');
+  sel.innerHTML = `<option value="">All categories</option>` +
+    cats.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+}
+
+// ── Single refresh ────────────────────────────────────────────────────────────
+
+async function refreshSingle(arxivId) {
+  // Mark loading in cache
+  const prevEntry = cache[arxivId];
+  cache[arxivId] = { ...prevEntry, status: 'loading' };
+  render();
+
+  const result = await fetchAltmetric(arxivId);
+  cache[arxivId] = {
+    last_fetched: new Date().toISOString(),
+    status: result.status,
+    data: result.data ?? (result.status === 'error' ? prevEntry?.data ?? null : null),
+  };
+  setCache(cache);
+  render();
+}
+
+// ── Refresh all ───────────────────────────────────────────────────────────────
+
+async function refreshAll() {
+  const arxivPapers = papers.filter(p => p.type === 'arxiv');
+  refreshAllActive = true;
+  refreshAllTotal = arxivPapers.length;
+  refreshAllCount = 0;
+
+  $('refresh-all-btn').disabled = true;
+  $('refresh-all-btn').textContent = `↻ Refreshing…`;
+
+  for (const paper of arxivPapers) {
+    refreshAllCount++;
+    updateHeaderStats();
+
+    const result = await fetchAltmetric(paper.arxiv_id);
+    cache[paper.arxiv_id] = {
+      last_fetched: new Date().toISOString(),
+      status: result.status,
+      data: result.data ?? null,
+    };
+    setCache(cache);
+    render();
+  }
+
+  refreshAllActive = false;
+  $('refresh-all-btn').disabled = false;
+  $('refresh-all-btn').textContent = '↻ Refresh all';
+  updateHeaderStats();
+}
+
+// ── Background fetch for stale/missing ───────────────────────────────────────
+
+async function backgroundFetchStale() {
+  const arxivPapers = papers.filter(p => p.type === 'arxiv');
+  const stale = arxivPapers.filter(p => isCacheStale(cache[p.arxiv_id]));
+  for (const paper of stale) {
+    const result = await fetchAltmetric(paper.arxiv_id);
+    cache[paper.arxiv_id] = {
+      last_fetched: new Date().toISOString(),
+      status: result.status,
+      data: result.data ?? null,
+    };
+    setCache(cache);
+    render();
+  }
+}
+
+// ── Banners ───────────────────────────────────────────────────────────────────
+
+function setupStaleBanner(scrapedAt) {
+  const days = daysSince(scrapedAt);
+  if (days > 8) {
+    $('stale-age').textContent = Math.floor(days);
+    $('stale-banner').style.display = '';
+  }
+  $('stale-dismiss').addEventListener('click', () => {
+    $('stale-banner').style.display = 'none';
+  });
+}
+
+function setupNewBanner(allArxivIds) {
+  const seenIds = new Set(lsGet('seen_ids') || []);
+  const newIds = allArxivIds.filter(id => !seenIds.has(id));
+
+  if (newIds.length > 0) {
+    newIds.forEach(id => newIdsThisSession.add(id));
+    $('new-count').textContent = newIds.length;
+    $('new-banner').style.display = '';
+
+    // Update seen_ids
+    const updated = [...seenIds, ...newIds];
+    lsSet('seen_ids', updated);
+  }
+
+  $('new-dismiss').addEventListener('click', () => {
+    $('new-banner').style.display = 'none';
+  });
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+
+function showEmptyState() {
+  $('main-content').innerHTML = `
+    <div class="empty-state">
+      <h2>No paper data found.</h2>
+      <p>Run this in your terminal:</p>
+      <code>node scrape.js</code>
+      <p>Then refresh this page.</p>
+      <p style="margin-top:12px;font-size:12px;color:#6c757d">
+        Make sure you're serving via <code style="display:inline;padding:2px 4px">npx serve .</code>,
+        not opening index.html directly.
+      </p>
+    </div>`;
+  $('header-stats').textContent = 'No data';
+}
+
+// ── Export CSV ────────────────────────────────────────────────────────────────
+
+function exportCsv() {
+  const rows = [['Title', 'arXiv ID', 'Altmetric Score', 'Twitter', 'News', 'Policy', 'Wikipedia', 'Blogs', 'Reddit', 'Last Fetched']];
+  for (const p of papers.filter(p => p.type === 'arxiv')) {
+    const entry = cache[p.arxiv_id];
+    const d = entry?.data;
+    rows.push([
+      `"${(p.title || '').replace(/"/g, '""')}"`,
+      p.arxiv_id,
+      d ? Math.round(d.score ?? d.altmetric_score ?? 0) : '',
+      d?.cited_by_tweeters_count ?? '',
+      d?.cited_by_newsoutlets_count ?? '',
+      d?.cited_by_policies_count ?? '',
+      d?.cited_by_wikipedia_count ?? '',
+      d?.cited_by_feeds_count ?? '',
+      d?.cited_by_rdts_count ?? '',
+      entry?.last_fetched ?? '',
+    ]);
+  }
+
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `aisi-altmetric-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+async function init() {
+  // Load papers.json
+  let papersData;
+  try {
+    const res = await fetch('./papers.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    papersData = await res.json();
+  } catch {
+    showEmptyState();
+    return;
+  }
+
+  papers = papersData.papers || [];
+  // Attach meta for header stats
+  papers._meta = { scraped_at: papersData.scraped_at };
+
+  // Merge cached data
+  cache = getCache();
+
+  // Populate categories
+  populateCategories();
+
+  // Banners
+  if (papersData.scraped_at) setupStaleBanner(papersData.scraped_at);
+  const allArxivIds = papers.filter(p => p.arxiv_id).map(p => p.arxiv_id);
+  setupNewBanner(allArxivIds);
+
+  // Initial render with cached data
+  render();
+
+  // Background fetch stale entries
+  backgroundFetchStale();
+
+  // Controls
+  $('sort-select').addEventListener('change', e => {
+    sortMode = e.target.value;
+    render();
+  });
+
+  $('filter-select').addEventListener('change', e => {
+    filterCategory = e.target.value;
+    render();
+  });
+
+  $('refresh-all-btn').addEventListener('click', refreshAll);
+
+  $('export-btn').addEventListener('click', exportCsv);
+}
+
+init();
+</script>
+</body>
+</html>

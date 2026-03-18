@@ -1,0 +1,385 @@
+{
+  "scraped_at": "2026-03-17T15:47:02.243Z",
+  "source_url": "https://www.aisi.gov.uk/research",
+  "total_found": 42,
+  "papers": [
+    {
+      "title": "Measuring AI Agents’ Progress on Multi-Step Cyber Attack Scenarios",
+      "aisi_url": "https://www.aisi.gov.uk/research/measuring-ai-agents-progress-on-multi-step-cyber-attack-scenarios",
+      "report_url": "https://arxiv.org/abs/2603.11214",
+      "type": "arxiv",
+      "arxiv_id": "2603.11214",
+      "category": "Cyber &amp; Autonomous Systems",
+      "published_date": "Mar 16, 2026"
+    },
+    {
+      "title": "A multi-turn framework for evaluating AI misuse in fraud and cybercrime scenarios",
+      "aisi_url": "https://www.aisi.gov.uk/research/a-multi-turn-framework-for-evaluating-ai-misuse-in-fraud-and-cybercrime-scenarios",
+      "report_url": "https://arxiv.org/abs/2602.21831",
+      "type": "arxiv",
+      "arxiv_id": "2602.21831",
+      "category": "Societal Resilience",
+      "published_date": "Feb 26, 2026"
+    },
+    {
+      "title": "Seven simple steps for log analysis in AI systems",
+      "aisi_url": "https://www.aisi.gov.uk/research/seven-simple-steps-for-log-analysis-in-ai-systems",
+      "report_url": "https://www.techrxiv.org/users/1032063/articles/1391870-seven-simple-steps-for-log-analysis-in-ai-systems",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Science of Evaluations",
+      "published_date": "Feb 25, 2026"
+    },
+    {
+      "title": "Boundary Point Jailbreaking of Black-Box LLMs",
+      "aisi_url": "https://www.aisi.gov.uk/research/boundary-point-jailbreaking-of-black-box-llms",
+      "report_url": "https://arxiv.org/abs/2602.15001",
+      "type": "arxiv",
+      "arxiv_id": "2602.15001",
+      "category": "Red Team",
+      "published_date": "Feb 17, 2026"
+    },
+    {
+      "title": "AISI Frontier AI Trends Report (2025)",
+      "aisi_url": "https://www.aisi.gov.uk/research/aisi-frontier-ai-trends-report-2025",
+      "report_url": "https://www.aisi.gov.uk/frontier-ai-trends-report",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Organisation",
+      "published_date": "Dec 18, 2025"
+    },
+    {
+      "title": "Practical challenges of control monitoring in frontier AI deployments",
+      "aisi_url": "https://www.aisi.gov.uk/research/practical-challenges-of-control-monitoring-in-frontier-ai-deployments",
+      "report_url": "https://arxiv.org/abs/2512.22154",
+      "type": "arxiv",
+      "arxiv_id": "2512.22154",
+      "category": "Control",
+      "published_date": "Dec 15, 2025"
+    },
+    {
+      "title": "Async control: Stress-testing asynchronous control measures for LLM agents",
+      "aisi_url": "https://www.aisi.gov.uk/research/async-control-stress-testing-asynchronous-control-measures-for-llm-agents",
+      "report_url": "https://arxiv.org/abs/2512.13526",
+      "type": "arxiv",
+      "arxiv_id": "2512.13526",
+      "category": "Control",
+      "published_date": "Dec 15, 2025"
+    },
+    {
+      "title": "Does self-evaluation enable wireheading in language models?",
+      "aisi_url": "https://www.aisi.gov.uk/research/does-self-evaluation-enable-wireheading-in-language-models",
+      "report_url": "https://arxiv.org/abs/2511.23092",
+      "type": "arxiv",
+      "arxiv_id": "2511.23092",
+      "category": "Alignment",
+      "published_date": "Dec 1, 2025"
+    },
+    {
+      "title": "Open technical problems in open-weight AI model risk management",
+      "aisi_url": "https://www.aisi.gov.uk/research/open-technical-problems-in-open-weight-ai-model-risk-management",
+      "report_url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5705186",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Red Team",
+      "published_date": "Oct 26, 2025"
+    },
+    {
+      "title": "Breaking agent backbones: Evaluating the security of backbone LLMs in AI agents",
+      "aisi_url": "https://www.aisi.gov.uk/research/breaking-agent-backbones-evaluating-the-security-of-backbone-llms-in-ai-agents",
+      "report_url": "https://arxiv.org/abs/2510.22620",
+      "type": "arxiv",
+      "arxiv_id": "2510.22620",
+      "category": "Red Team",
+      "published_date": "Oct 26, 2025"
+    },
+    {
+      "title": "Understanding AI Trajectories: Mapping the Limitations of Current AI Systems",
+      "aisi_url": "https://www.aisi.gov.uk/research/understanding-ai-trajectories-mapping-the-limitations-of-current-ai-systems",
+      "report_url": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/68fb86aa2c3b1b7ea6251cc1_Understanding%20AI%20Trajectories%20(24_10%20update).pdf",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Strategic Awareness",
+      "published_date": "Oct 23, 2025"
+    },
+    {
+      "title": "Poisoning Attacks on LLMs Require a Near-constant Number of Poison Samples",
+      "aisi_url": "https://www.aisi.gov.uk/research/poisoning-attacks-on-llms-require-a-near-constant-number-of-poison-samples",
+      "report_url": "https://arxiv.org/abs/2510.07192",
+      "type": "arxiv",
+      "arxiv_id": "2510.07192",
+      "category": "Red Team",
+      "published_date": "Oct 8, 2025"
+    },
+    {
+      "title": "Inoculation Prompting: Eliciting traits from LLMs during training can suppress them at test-time",
+      "aisi_url": "https://www.aisi.gov.uk/research/inoculation-prompting-eliciting-traits-from-llms-during-training-can-suppress-them-at-test-time",
+      "report_url": "https://arxiv.org/abs/2510.04340",
+      "type": "arxiv",
+      "arxiv_id": "2510.04340",
+      "category": "Alignment",
+      "published_date": "Oct 5, 2025"
+    },
+    {
+      "title": "Conversational AI increases political knowledge as effectively as self-directed internet search",
+      "aisi_url": "https://www.aisi.gov.uk/research/conversational-ai-increases-political-knowledge-as-effectively-as-self-directed-internet-search",
+      "report_url": "https://arxiv.org/abs/2509.05219",
+      "type": "arxiv",
+      "arxiv_id": "2509.05219",
+      "category": "Human Influence",
+      "published_date": "Sep 8, 2025"
+    },
+    {
+      "title": "Lessons from studying two-hop latent reasoning",
+      "aisi_url": "https://www.aisi.gov.uk/research/lessons-from-studying-two-hop-latent-reasoning",
+      "report_url": "https://arxiv.org/abs/2411.16353",
+      "type": "arxiv",
+      "arxiv_id": "2411.16353",
+      "category": "Control",
+      "published_date": "Sep 6, 2025"
+    },
+    {
+      "title": "Deep ignorance: Filtering pretraining data builds tamper-resistant safeguards into open-weight LLMs",
+      "aisi_url": "https://www.aisi.gov.uk/research/deep-ignorance-filtering-pretraining-data-builds-tamper-resistant-safeguards-into-open-weight-llms",
+      "report_url": "https://arxiv.org/abs/2508.06601",
+      "type": "arxiv",
+      "arxiv_id": "2508.06601",
+      "category": "Red Team",
+      "published_date": "Aug 8, 2025"
+    },
+    {
+      "title": "Security challenges in AI agent deployment: Insights from a large scale public competition",
+      "aisi_url": "https://www.aisi.gov.uk/research/security-challenges-in-ai-agent-deployment-insights-from-a-large-scale-public-competition",
+      "report_url": "https://arxiv.org/abs/2507.20526",
+      "type": "arxiv",
+      "arxiv_id": "2507.20526",
+      "category": "Red Team",
+      "published_date": "Jul 27, 2025"
+    },
+    {
+      "title": "STACK: Adversarial attacks on LLM safeguard pipelines",
+      "aisi_url": "https://www.aisi.gov.uk/research/stack-adversarial-attacks-on-llm-safeguard-pipelines",
+      "report_url": "https://arxiv.org/abs/2506.24068",
+      "type": "arxiv",
+      "arxiv_id": "2506.24068",
+      "category": "Red Team",
+      "published_date": "Jul 18, 2025"
+    },
+    {
+      "title": "The levers of political persuasion with conversational AI",
+      "aisi_url": "https://www.aisi.gov.uk/research/the-levers-of-political-persuasion-with-conversational-ai",
+      "report_url": "https://www.arxiv.org/abs/2507.13919",
+      "type": "arxiv",
+      "arxiv_id": "2507.13919",
+      "category": "Human Influence",
+      "published_date": "Jul 18, 2025"
+    },
+    {
+      "title": "Chain of thought monitorability: A new and fragile opportunity for AI safety",
+      "aisi_url": "https://www.aisi.gov.uk/research/chain-of-thought-monitorability-a-new-and-fragile-opportunity-for-ai-safety",
+      "report_url": "https://arxiv.org/abs/2507.11473",
+      "type": "arxiv",
+      "arxiv_id": "2507.11473",
+      "category": "Control",
+      "published_date": "Jul 15, 2025"
+    },
+    {
+      "title": "HiBayES: A hierarchical bayesian modelling framework for AI evaluation statistics",
+      "aisi_url": "https://www.aisi.gov.uk/research/hibayes-a-hierarchical-bayesian-modeling-framework-for-ai-evaluation-statistics",
+      "report_url": "https://arxiv.org/abs/2505.05602",
+      "type": "arxiv",
+      "arxiv_id": "2505.05602",
+      "category": "Science of Evaluations",
+      "published_date": "Jul 13, 2025"
+    },
+    {
+      "title": "White Box Control at UK AISI - update on sandbagging investigations",
+      "aisi_url": "https://www.aisi.gov.uk/research/white-box-control-at-uk-aisi---update-on-sandbagging-investigations",
+      "report_url": "https://www.alignmentforum.org/posts/pPEeMdgjpjHZWCDFw/white-box-control-at-uk-aisi-update-on-sandbagging",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Control",
+      "published_date": "Jul 10, 2025"
+    },
+    {
+      "title": "Skewed Score: A statistical framework to assess autograders",
+      "aisi_url": "https://www.aisi.gov.uk/research/skewed-score-a-statistical-framework-to-assess-autograders",
+      "report_url": null,
+      "type": "no_link",
+      "arxiv_id": null,
+      "category": "Science of Evaluations",
+      "published_date": "Jul 9, 2025"
+    },
+    {
+      "title": "Lessons from a chimp: AI &quot;scheming&quot; and the quest for ape language",
+      "aisi_url": "https://www.aisi.gov.uk/research/lessons-from-a-chimp-ai-scheming-and-the-quest-for-ape-language",
+      "report_url": "https://arxiv.org/abs/2507.03409",
+      "type": "arxiv",
+      "arxiv_id": "2507.03409",
+      "category": "Science of Evaluations",
+      "published_date": "Jul 4, 2025"
+    },
+    {
+      "title": "Avoiding obfuscation with prover-estimator debate",
+      "aisi_url": "https://www.aisi.gov.uk/research/avoiding-obfuscation-with-prover-estimator-debate",
+      "report_url": "https://arxiv.org/abs/2506.13609",
+      "type": "arxiv",
+      "arxiv_id": "2506.13609",
+      "category": "Alignment",
+      "published_date": "Jun 15, 2025"
+    },
+    {
+      "title": "An example safety case for safeguards against misuse",
+      "aisi_url": "https://www.aisi.gov.uk/research/an-example-safety-case-for-safeguards-against-misuse",
+      "report_url": "https://arxiv.org/abs/2505.18003",
+      "type": "arxiv",
+      "arxiv_id": "2505.18003",
+      "category": "Safety Cases",
+      "published_date": "Jun 5, 2025"
+    },
+    {
+      "title": "Existing Large Language Model unlearning evaluations are inconclusive",
+      "aisi_url": "https://www.aisi.gov.uk/research/existing-large-language-model-unlearning-evaluations-are-inconclusive",
+      "report_url": "https://arxiv.org/abs/2506.00688",
+      "type": "arxiv",
+      "arxiv_id": "2506.00688",
+      "category": "Red Team",
+      "published_date": "May 31, 2025"
+    },
+    {
+      "title": "RepliBench: Evaluating the autonomous replication capabilities of language model agents",
+      "aisi_url": "https://www.aisi.gov.uk/research/replibench-evaluating-the-autonomous-replication-capabilities-of-language-model-agents",
+      "report_url": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6807879ce7b1b5f5163f4a32_RepliBenchPaper.pdf",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Cyber &amp; Autonomous Systems",
+      "published_date": "May 21, 2025"
+    },
+    {
+      "title": "How to evaluate control measures for LLM agents? A trajectory from today to superintelligence",
+      "aisi_url": "https://www.aisi.gov.uk/research/how-to-evaluate-control-measures-for-llm-agents-a-trajectory-from-today-to-superintelligence",
+      "report_url": "https://arxiv.org/abs/2504.05259",
+      "type": "arxiv",
+      "arxiv_id": "2504.05259",
+      "category": "Control",
+      "published_date": "May 7, 2025"
+    },
+    {
+      "title": "An alignment safety case sketch based on debate",
+      "aisi_url": "https://www.aisi.gov.uk/research/an-alignment-safety-case-sketch-based-on-debate",
+      "report_url": "https://arxiv.org/abs/2505.03989",
+      "type": "arxiv",
+      "arxiv_id": "2505.03989",
+      "category": "Safety Cases",
+      "published_date": "May 6, 2025"
+    },
+    {
+      "title": "Evaluating explanations: An explanatory virtues framework for mechanistic interpretability",
+      "aisi_url": "https://www.aisi.gov.uk/research/evaluating-explanations-an-explanatory-virtues-framework-for-mechanistic-interpretability",
+      "report_url": "https://arxiv.org/abs/2505.01372",
+      "type": "arxiv",
+      "arxiv_id": "2505.01372",
+      "category": "Control",
+      "published_date": "May 2, 2025"
+    },
+    {
+      "title": "A mathematical philosophy of explanations in mechanistic interpretability",
+      "aisi_url": "https://www.aisi.gov.uk/research/a-mathematical-philosophy-of-explanations-in-mechanistic-interpretability",
+      "report_url": "https://arxiv.org/abs/2505.00808",
+      "type": "arxiv",
+      "arxiv_id": "2505.00808",
+      "category": "Control",
+      "published_date": "May 1, 2025"
+    },
+    {
+      "title": "Adversarial machine learning: A taxonomy and terminology of attacks and mitigations",
+      "aisi_url": "https://www.aisi.gov.uk/research/adversarial-machine-learning-a-taxonomy-and-terminology-of-attacks-and-mitigations",
+      "report_url": "https://csrc.nist.gov/pubs/ai/100/2/e2025/final",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Red Team",
+      "published_date": "Mar 24, 2025"
+    },
+    {
+      "title": "Model tampering attacks enable more rigorous evaluations of LLM capabilities",
+      "aisi_url": "https://www.aisi.gov.uk/research/model-tampering-attacks-enable-more-rigorous-evaluations-of-llm-capabilities-2",
+      "report_url": "https://arxiv.org/abs/2502.05209",
+      "type": "arxiv",
+      "arxiv_id": "2502.05209",
+      "category": "Red Team",
+      "published_date": "Mar 2, 2025"
+    },
+    {
+      "title": "Fundamental limitations in defending LLM finetuning APIs",
+      "aisi_url": "https://www.aisi.gov.uk/research/fundamental-limitations-in-defending-llm-finetuning-apis-2",
+      "report_url": "https://arxiv.org/abs/2502.14828",
+      "type": "arxiv",
+      "arxiv_id": "2502.14828",
+      "category": "Red Team",
+      "published_date": "Feb 20, 2025"
+    },
+    {
+      "title": "Safety Cases: A scalable approach to Frontier AI safety",
+      "aisi_url": "https://www.aisi.gov.uk/research/safety-cases-a-scalable-approach-to-frontier-ai-safety",
+      "report_url": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/67aa1ee70c744109b20a0032_SafetyCasesAScalableApproachToFrontierAISafety.pdf",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Safety Cases",
+      "published_date": "Feb 10, 2025"
+    },
+    {
+      "title": "Emerging practices in frontier AI safety frameworks",
+      "aisi_url": "https://www.aisi.gov.uk/research/emerging-practices-in-frontier-ai-safety-frameworks",
+      "report_url": "https://arxiv.org/abs/2503.04746",
+      "type": "arxiv",
+      "arxiv_id": "2503.04746",
+      "category": null,
+      "published_date": "Feb 5, 2025"
+    },
+    {
+      "title": "Why human-AI relationships need socioaffective alignment",
+      "aisi_url": "https://www.aisi.gov.uk/research/why-human-ai-relationships-need-socioaffective-alignment-2",
+      "report_url": "https://arxiv.org/abs/2502.02528",
+      "type": "arxiv",
+      "arxiv_id": "2502.02528",
+      "category": "Societal Resilience",
+      "published_date": "Feb 4, 2025"
+    },
+    {
+      "title": "Principles for evaluating misuse safeguards of frontier AI systems",
+      "aisi_url": "https://www.aisi.gov.uk/research/principles-for-evaluating-misuse-safeguards-of-frontier-ai-systems",
+      "report_url": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/67a23823ef4a296bb6c92dd4_Principles%20for%20Evaluating%20Misuse%20Safeguards%20of%20Frontier%20AI%20Systems%20(1).pdf",
+      "type": "other",
+      "arxiv_id": null,
+      "category": "Red Team",
+      "published_date": "Feb 4, 2025"
+    },
+    {
+      "title": "A sketch of an AI control safety case",
+      "aisi_url": "https://www.aisi.gov.uk/research/a-sketch-of-an-ai-control-safety-case",
+      "report_url": "https://arxiv.org/abs/2501.17315",
+      "type": "arxiv",
+      "arxiv_id": "2501.17315",
+      "category": "Safety Cases",
+      "published_date": "Jan 28, 2025"
+    },
+    {
+      "title": "Safety case template for frontier AI: A cyber inability argument",
+      "aisi_url": "https://www.aisi.gov.uk/research/safety-case-template-for-frontier-ai-a-cyber-inability-argument-2",
+      "report_url": "https://arxiv.org/abs/2411.08088",
+      "type": "arxiv",
+      "arxiv_id": "2411.08088",
+      "category": "Safety Cases",
+      "published_date": "Dec 12, 2024"
+    },
+    {
+      "title": "AgentHarm: A benchmark for measuring harmfulness of LLM agents",
+      "aisi_url": "https://www.aisi.gov.uk/research/agentharm-a-benchmark-for-measuring-harmfulness-of-llm-agents",
+      "report_url": "https://arxiv.org/abs/2410.09024",
+      "type": "arxiv",
+      "arxiv_id": "2410.09024",
+      "category": "Red Team",
+      "published_date": "Oct 11, 2024"
+    }
+  ]
+}

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AISI · External Sharing Clearance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f2f1ed;
+      --surface: #ffffff;
+      --border: #dddbd5;
+      --border-strong: #c4c2bb;
+      --text: #181715;
+      --text-2: #5f5e58;
+      --text-3: #9a9890;
+      --accent: #1848a0;
+      --accent-light: #eaf0fb;
+      --accent-border: #b3c8ef;
+      --tag-bg: #eaf0fb;
+      --tag-text: #1848a0;
+      --tag-border: #b3c8ef;
+      --linear: #5e6ad2;
+      --linear-light: #eeeffe;
+      --linear-border: #c5c8f5;
+      --error: #b91c1c;
+      --error-light: #fef2f2;
+      --success: #166534;
+      --success-light: #f0fdf4;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 580px; margin: 0 auto; }
+    header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .wordmark { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .14em; color: var(--text-3); text-transform: uppercase; margin-bottom: .85rem; }
+    h1 { font-size: 22px; font-weight: 600; margin-bottom: .3rem; }
+    .subtitle { font-size: 14px; color: var(--text-2); line-height: 1.55; }
+
+    /* Progress */
+    .progress-wrap { display: flex; align-items: center; gap: 5px; margin-bottom: 1.4rem; }
+    .pd { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; transition: background .2s, transform .18s; }
+    .pd.done { background: var(--accent); }
+    .pd.active { background: var(--text); transform: scale(1.45); }
+    .prog-label { font-size: 11px; color: var(--text-3); font-family: 'DM Mono', monospace; margin-left: auto; }
+
+    /* Tags */
+    .tags-label { font-size: 10px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+    .tag { font-size: 12px; font-weight: 500; padding: 3px 11px; border-radius: 20px; background: var(--tag-bg); color: var(--tag-text); border: 1px solid var(--tag-border); }
+
+    /* Question card */
+    .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem 1.75rem; box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+    .q-id { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+    .q-text { font-size: 16px; font-weight: 500; line-height: 1.55; }
+    .note { font-size: 12px; color: var(--text-3); margin-top: 6px; line-height: 1.5; }
+    .btn-row { display: flex; gap: 8px; margin-top: 1.35rem; flex-wrap: wrap; align-items: center; }
+    .btn { border: 1px solid var(--border-strong); border-radius: 8px; padding: 10px 30px; font-size: 14px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text); transition: background .12s, border-color .12s; font-family: inherit; }
+    .btn:hover { background: var(--bg); border-color: var(--text); }
+    .btn.yes { border-color: var(--accent-border); color: var(--accent); background: var(--accent-light); }
+    .btn.yes:hover { background: #d5e4f8; border-color: var(--accent); }
+    .btn.back { margin-left: auto; padding: 10px 16px; font-size: 13px; color: var(--text-3); border-color: var(--border); background: transparent; }
+    .btn.back:hover { color: var(--text); border-color: var(--border-strong); background: var(--bg); }
+
+    /* Results */
+    .results { display: flex; flex-direction: column; gap: 10px; }
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .sec-head { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); padding: 9px 16px; border-bottom: 1px solid var(--border); background: var(--bg); }
+    .r-item { padding: 13px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; }
+    .r-item:last-child { border-bottom: none; }
+    .r-cb { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+    .r-body { flex: 1; min-width: 0; }
+    .r-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+    .r-name { font-size: 14px; font-weight: 600; }
+    .r-time { font-size: 11px; color: var(--text-3); font-family: 'DM Mono', monospace; white-space: nowrap; margin-left: 8px; }
+    .r-how { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .r-stage { font-size: 11px; color: var(--accent); font-weight: 500; margin-top: 4px; font-family: 'DM Mono', monospace; }
+    .no-specialist { padding: 14px 16px; font-size: 14px; color: var(--text-2); }
+
+    /* Actions */
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .action-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border-strong); border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text); transition: background .12s, border-color .12s; font-family: inherit; white-space: nowrap; text-decoration: none; }
+    .action-btn:hover { background: var(--bg); border-color: var(--text); }
+    .action-btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .action-btn.primary:hover { opacity: .82; }
+    .results-note { font-size: 12px; color: var(--text-3); line-height: 1.55; margin-top: 10px; }
+    .action-btn.linear-btn { background: var(--linear-light); color: var(--linear); border-color: var(--linear-border); }
+    .action-btn.linear-btn:hover { background: #dddff9; border-color: var(--linear); }
+    .action-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* Linear modal */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(24,23,21,.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+    .modal-backdrop.hidden { display: none; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.14);
+    }
+    .modal-title { font-size: 16px; font-weight: 600; margin-bottom: .3rem; }
+    .modal-sub { font-size: 13px; color: var(--text-2); margin-bottom: 1.25rem; line-height: 1.5; }
+    .field { margin-bottom: 1rem; }
+    .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 5px; }
+    .field input, .field select {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid var(--border-strong); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      background: var(--surface);
+      transition: border-color .12s;
+      appearance: none;
+    }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9890' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 1.25rem; }
+    .modal-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity .12s, background .12s; }
+    .modal-btn.confirm { background: var(--linear); color: #fff; border: none; }
+    .modal-btn.confirm:hover { opacity: .88; }
+    .modal-btn.confirm:disabled { opacity: .4; cursor: not-allowed; }
+    .modal-btn.cancel { background: transparent; color: var(--text-2); border: 1px solid var(--border-strong); }
+    .modal-btn.cancel:hover { background: var(--bg); }
+
+    .modal-status { margin-top: 1rem; font-size: 13px; line-height: 1.55; padding: 10px 12px; border-radius: 8px; display: none; }
+    .modal-status.error { background: var(--error-light); color: var(--error); display: block; }
+    .modal-status.success { background: var(--success-light); color: var(--success); display: block; }
+    .modal-status.loading { background: var(--accent-light); color: var(--accent); display: block; }
+    .modal-status a { color: inherit; font-weight: 600; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; font-size: 13px; font-weight: 500; padding: 10px 20px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .22s; white-space: nowrap; font-family: 'DM Sans', sans-serif; z-index: 999; }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="wordmark">AISI · DSIT</div>
+    <h1>External sharing clearance</h1>
+    <p class="subtitle">Answer each question to identify which reviewers your product needs before it goes out.</p>
+  </header>
+  <div id="app"></div>
+</div>
+
+<!-- Linear modal -->
+<div class="modal-backdrop hidden" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-title">Create Linear issue</div>
+    <div class="modal-sub">A parent issue will be created with each reviewer as a sub-issue, pre-filled with timing and how-to details.</div>
+    <div class="field">
+      <label for="product-name">Product / output name</label>
+      <input type="text" id="product-name" placeholder="e.g. CBRNE evaluation report" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="team-select">Linear team</label>
+      <select id="team-select">
+        <option value="">Loading teams…</option>
+      </select>
+    </div>
+    <div class="modal-status" id="modal-status"></div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn confirm" id="modal-confirm" onclick="submitLinear()">Create issues</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Data ────────────────────────────────────────────────────────────────────
+
+const Qs = {
+  q1:  { text:'Will this product be released publicly?',                yes:'q2',  no:'q6',  uy_yes:['Comms'], uy_no:[] },
+  q2:  { text:'Do you want an AISI blog post for the launch?',          yes:'q3',  no:'q3',  uy_yes:['Comms Editorial'], uy_no:[] },
+  q6:  { text:'Is it being shared cross-Whitehall (xWH)?',              yes:'q3',  no:'q3',  uy_yes:['Reporting Hub (NSTAR)'], uy_no:[], note:'Shown for non-public products only.' },
+  q3:  { text:'Does it reference CBRNE content or use CB as a harmful prompt example?', yes:'q4', no:'q4', uy_yes:['Chem Bio'], uy_no:[] },
+  q4:  { text:'Does it use results generated by or related to CAST?',    yes:'q5',  no:'q5',  uy_yes:['CAST'], uy_no:[] },
+  q5:  { text:'Does it contain closed lab results, privileged AISI API results, or open-weight model results?', yes:'q8', no:'q8', uy_yes:['Testing & Partnerships (TTP)'], uy_no:[] },
+  q8:  { text:'Will it be sent to the US Government, or contain potentially controversial results to the US?', yes:'q9', no:'q9', uy_yes:['International'], uy_no:[] },
+  q9:  { text:'Was it written in collaboration with external partners?', yes:'q10', no:'q10', uy_yes:['External Partners'], uy_no:[] },
+  q10: { text:'Are you open-sourcing any code with this product?',       yes:'end', no:'end', uy_yes:['Core Tech'], uy_no:[] },
+};
+
+const details = {
+  'Comms Editorial':            { stage:'At project scoping',  how:'Fill in the pinned workflow in #[yourteam]-publications-comms to raise your request', time:'2+ weeks' },
+  'Comms':                      { stage:'Once results ready',  how:'Fill in the pinned workflow in #[yourteam]-publications-comms to raise your request', time:'5 days preferred, 2-3 min' },
+  'Reporting Hub (NSTAR)':      { stage:'Once results ready',  how:'DM @Charlotte Pound, @Kitty Medcalf, @Ian Humphris or @james.wright', time:'~1-5 days' },
+  'CAST':                       { stage:'Once results ready',  how:'Raise request in #cast-requests. Include: Background, Ask, Priority, Deadline', time:'~1-7 days' },
+  'Testing & Partnerships (TTP)': { stage:'Once results ready', how:'Complete the TTP testing results form. Urgent? Flag to Dominykas Broga + Roxana Legezynska + James Walpole', time:'Up to 10 days' },
+  'Core Tech':                  { stage:'Once results ready',  how:'Raise a request in #ops-open-source-approvals', time:'~1 week' },
+  'Chem Bio':                   { stage:'Once draft ready',    how:'Raise request in #cb-external-asks, tag @Sophie Rose and @Adam Moore. Include: Background, Ask, Priority, Deadline', time:'~3-10 days' },
+  'International':              { stage:'Once draft ready',    how:'TBD', time:'TBD' },
+  'External Partners':          { stage:'Once draft ready',    how:'Use existing channels with partners to align on draft text before final contents review', time:'Partner-dependent' },
+};
+
+const stageOrder = ['At project scoping','Once results ready','Once draft ready'];
+
+const alwaysBase = [
+  { key:'WSL', name:'Your WSL',               how:'Reach out before final contents review -- timing is team-dependent', time:'Team-dependent', stage:'Final signoff' },
+  { key:'DD',  name:'Your Deputy Director',   how:'Raise request in #karina-to-review or #nate-to-review', time:'1-2 weeks', stage:'Final signoff' },
+  { key:'RD',  name:'Your Research Director', how:'Tag in channel; remind via DM 2 days before deadline if needed', time:'~1 week', stage:'Final signoff' },
+];
+
+const ORDER = ['q1','q2','q6','q3','q4','q5','q8','q9','q10'];
+let history = [], cur = 'q1', rev = [], done = 0;
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+function sortedReviewers(u) {
+  return [...u].sort((a, b) => {
+    const ai = stageOrder.indexOf(details[a]?.stage ?? '');
+    const bi = stageOrder.indexOf(details[b]?.stage ?? '');
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+}
+
+// Research Director is always only in final signoff — never in specialist list
+function alwaysFiltered() {
+  return alwaysBase;
+}
+
+function getSpecialist() { return sortedReviewers([...new Set(rev)]); }
+function getAlways()     { return alwaysFiltered(); }
+
+// ── Render ───────────────────────────────────────────────────────────────────
+
+function render() {
+  const app = document.getElementById('app');
+  const prog = `<div class="progress-wrap">
+    ${ORDER.map((_,i) => `<div class="pd ${i<done?'done':i===done?'active':''}"></div>`).join('')}
+    <span class="prog-label">${done} / ${ORDER.length}</span>
+  </div>`;
+
+  if (cur === 'end') {
+    app.innerHTML = prog + renderResults(getSpecialist());
+    return;
+  }
+
+  const q = Qs[cur];
+  const tags = [...new Set(rev)];
+  app.innerHTML = prog
+    + (tags.length ? `<div class="tags-label">Reviewers identified so far</div><div class="tags">${tags.map(r => `<span class="tag">${r}</span>`).join('')}</div>` : '')
+    + `<div class="q-card">
+        <div class="q-id">${cur}</div>
+        <div class="q-text">${q.text}</div>
+        ${q.note ? `<div class="note">${q.note}</div>` : ''}
+        <div class="btn-row">
+          <button class="btn yes" onclick="go(true)">Yes</button>
+          <button class="btn" onclick="go(false)">No</button>
+          ${history.length ? `<button class="btn back" onclick="goBack()">&#8592; Back</button>` : ''}
+        </div>
+      </div>`;
+}
+
+function rItem(name, how, time) {
+  return `<div class="r-item">
+    <div class="r-body">
+      <div class="r-row"><span class="r-name">${name}</span><span class="r-time">${time}</span></div>
+      <div class="r-how">${how}</div>
+    </div>
+  </div>`;
+}
+
+function renderResults(u) {
+  const always = getAlways();
+  const specialistHtml = u.length
+    ? u.map(r => { const d = details[r]||{how:'-',time:'-'}; return rItem(r,d.how,d.time); }).join('')
+    : '<div class="no-specialist">No specialist reviewers required for this product.</div>';
+  const alwaysHtml = always.map(r => rItem(r.name, r.how, r.time)).join('');
+
+  return `<div class="results">
+    <div class="section"><div class="sec-head">Specialist reviewers</div>${specialistHtml}</div>
+    <div class="section"><div class="sec-head">Final signoff — always required</div>${alwaysHtml}</div>
+    <div class="actions">
+      <a class="action-btn linear-btn" href="https://linear.app/aisi/new?template=7eb28aa6-f313-467e-aa26-20a2624f3d6a" target="_blank" rel="noopener">&#9670; Create Linear issue to track</a>
+      <button class="action-btn" onclick="goBack()">&#8592; Back</button>
+      <button class="action-btn" onclick="restart()">&#x21BA; Start over</button>
+    </div>
+    <p class="results-note">The Linear issue tracks each clearance as a subissue: delete subissues you don't need according to the quiz results. Coming soon: auto-populating the Linear subissues based on quiz results.</p>
+  </div>`;
+}
+
+// ── Navigation ───────────────────────────────────────────────────────────────
+
+function go(yes) {
+  history.push({ cur, rev: [...rev], done });
+  const q = Qs[cur];
+  const toAdd = yes ? q.uy_yes : q.uy_no;
+  if (toAdd && toAdd.length) rev.push(...toAdd);
+  cur = yes ? q.yes : q.no;
+  done++;
+  render();
+}
+
+function goBack() {
+  if (!history.length) return;
+  const prev = history.pop();
+  cur = prev.cur; rev = prev.rev; done = prev.done;
+  render();
+}
+
+function restart() { history=[]; cur='q1'; rev=[]; done=0; render(); }
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── Download ─────────────────────────────────────────────────────────────────
+
+function buildText() {
+  const u = getSpecialist(), always = getAlways();
+  const date = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  const SEP = '-'.repeat(44);
+  const lines = ['AISI EXTERNAL SHARING CLEARANCE CHECKLIST', 'Generated: ' + date, SEP, '', 'SPECIALIST REVIEWERS', SEP];
+  if (u.length) {
+    u.forEach(r => {
+      const d = details[r]||{how:'-',time:'-'};
+      lines.push('[ ] '+r, '    Turnaround : '+d.time, '    How        : '+d.how, '');
+    });
+  } else { lines.push('No specialist reviewers required.', ''); }
+  lines.push('', 'FINAL SIGNOFF (always required)', SEP);
+  always.forEach(r => {
+    lines.push('[ ] '+r.name, '    Turnaround : '+r.time, '    How        : '+r.how, '');
+  });
+  return lines.join('\n');
+}
+
+async function downloadChecklist() {
+  const text = buildText();
+  const date = new Date().toLocaleDateString('en-GB').replace(/\//g,'-');
+  const filename = 'clearance-checklist-' + date + '.txt';
+
+  try {
+    // Use server-side function — avoids CSP blocks on data: URIs
+    const res = await fetch('/.netlify/functions/download-checklist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, filename }),
+    });
+    if (!res.ok) throw new Error('Server error ' + res.status);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); document.body.removeChild(a); }, 1000);
+    toast('Checklist downloaded');
+  } catch(e) {
+    // Fallback: open as plain text in a new tab
+    const w = window.open('', '_blank');
+    if (w) {
+      w.document.write('<html><head><title>' + filename + '</title></head><body><pre style="font-family:monospace;font-size:13px;line-height:1.6;padding:2rem;white-space:pre-wrap">' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</pre></body></html>');
+      w.document.close();
+      toast('Opened in new tab — use File > Save to download');
+    } else {
+      toast('Download blocked — please allow popups and try again');
+    }
+  }
+}
+
+// ── Copy Linear markdown ──────────────────────────────────────────────────────
+
+function buildMarkdown() {
+  const u = getSpecialist(), always = getAlways();
+  const date = new Date().toLocaleDateString('en-GB');
+  let md = '## Publication clearance -- [Product name]\n_'+date+'_\n\n### Specialist reviewers\n\n';
+  if (u.length) {
+    u.forEach(r => {
+      const d = details[r]||{how:'-',time:'-',stage:'-'};
+      md += '- [ ] **'+r+'** - _'+d.time+'_\n  - '+d.how+'\n  - When: '+d.stage+'\n';
+    });
+  } else { md += '- No specialist reviewers required\n'; }
+  md += '\n### Final signoff -- always required\n\n';
+  always.forEach(r => {
+    md += '- [ ] **'+r.name+'** - _'+r.time+'_\n  - '+r.how+'\n  - When: Final contents signoff before launch\n';
+  });
+  return md;
+}
+
+function copyLinear() {
+  const md = buildMarkdown();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(md).then(() => toast('Linear template copied')).catch(() => fallbackCopy(md));
+  } else { fallbackCopy(md); }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try {
+    document.execCommand('copy');
+    toast('Linear template copied');
+  } catch(e) { toast('Copy failed -- please copy manually'); }
+  document.body.removeChild(ta);
+}
+
+// ── Linear modal ─────────────────────────────────────────────────────────────
+
+let teamsLoaded = false;
+
+async function openModal() {
+  document.getElementById('modal-backdrop').classList.remove('hidden');
+  document.getElementById('product-name').value = '';
+  setModalStatus('', '');
+
+  if (!teamsLoaded) {
+    const sel = document.getElementById('team-select');
+    sel.innerHTML = '<option value="">Loading teams…</option>';
+    try {
+      const res = await fetch('/.netlify/functions/get-linear-teams');
+      const teams = await res.json();
+      if (teams.error) throw new Error(teams.error);
+      if (!teams.length) throw new Error('No teams found in your Linear workspace');
+      sel.innerHTML = teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+      teamsLoaded = true;
+    } catch(e) {
+      sel.innerHTML = '<option value="">Could not load teams</option>';
+      setModalStatus('error', 'Could not load Linear teams: ' + e.message + '. Check that LINEAR_API_KEY is set in Netlify environment variables.');
+    }
+  }
+
+  document.getElementById('product-name').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.add('hidden');
+}
+
+// Close on backdrop click
+document.getElementById('modal-backdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function setModalStatus(type, msg) {
+  const el = document.getElementById('modal-status');
+  el.className = 'modal-status' + (type ? ' ' + type : '');
+  el.innerHTML = msg;
+}
+
+async function submitLinear() {
+  const productName = document.getElementById('product-name').value.trim();
+  const teamId = document.getElementById('team-select').value;
+
+  if (!productName) {
+    setModalStatus('error', 'Please enter a product name.');
+    document.getElementById('product-name').focus();
+    return;
+  }
+  if (!teamId) {
+    setModalStatus('error', 'Please select a Linear team.');
+    return;
+  }
+
+  const btn = document.getElementById('modal-confirm');
+  btn.disabled = true;
+  btn.textContent = 'Creating…';
+  setModalStatus('loading', 'Creating issues in Linear…');
+
+  const u = getSpecialist();
+  const always = getAlways();
+
+  const specialists = u.map(r => {
+    const d = details[r]||{how:'-',time:'-',stage:'-'};
+    return { name: r, how: d.how, time: d.time, stage: d.stage };
+  });
+  const alwaysPayload = always.map(r => ({
+    name: r.name, how: r.how, time: r.time, stage: 'Final contents signoff before launch',
+  }));
+
+  try {
+    const res = await fetch('/.netlify/functions/create-linear-issue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productName, teamId, specialists, always: alwaysPayload }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || 'Unknown error');
+
+    const { parentIssue, subIssues } = data;
+    setModalStatus('success',
+      `Created <a href="${parentIssue.url}" target="_blank" rel="noopener">${parentIssue.identifier}: ${parentIssue.title}</a> with ${subIssues.length} sub-issue${subIssues.length !== 1 ? 's' : ''}.`
+    );
+    btn.textContent = 'Done';
+  } catch(e) {
+    setModalStatus('error', 'Error: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Create issues';
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
